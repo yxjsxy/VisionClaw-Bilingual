@@ -19,6 +19,7 @@ import SwiftUI
 struct NonStreamView: View {
   @ObservedObject var viewModel: StreamSessionViewModel
   @ObservedObject var wearablesVM: WearablesViewModel
+  @ObservedObject var localization = LocalizationManager.shared
   @State private var sheetHeight: CGFloat = 300
 
   var body: some View {
@@ -27,9 +28,13 @@ struct NonStreamView: View {
 
       VStack {
         HStack {
+          // Language toggle on the left
+          LanguageToggle()
+          
           Spacer()
+          
           Menu {
-            Button("Disconnect", role: .destructive) {
+            Button(localization.currentLanguage == .chinese ? "断开连接" : "Disconnect", role: .destructive) {
               wearablesVM.disconnectGlasses()
             }
             .disabled(wearablesVM.registrationState != .registered)
@@ -52,11 +57,13 @@ struct NonStreamView: View {
             .aspectRatio(contentMode: .fit)
             .frame(width: 120)
 
-          Text("Stream Your Glasses Camera")
+          Text(localization.currentLanguage == .chinese ? "串流眼镜摄像头" : "Stream Your Glasses Camera")
             .font(.system(size: 20, weight: .semibold))
             .foregroundColor(.white)
 
-          Text("Tap the Start streaming button to stream video from your glasses or use the camera button to take a photo from your glasses.")
+          Text(localization.currentLanguage == .chinese 
+               ? "点击「开始串流」按钮从眼镜传输视频，或使用相机按钮拍照。" 
+               : "Tap the Start streaming button to stream video from your glasses or use the camera button to take a photo from your glasses.")
             .font(.system(size: 15))
             .multilineTextAlignment(.center)
             .foregroundColor(.white)
@@ -72,7 +79,7 @@ struct NonStreamView: View {
             .foregroundColor(.white.opacity(0.7))
             .frame(width: 16, height: 16)
 
-          Text("Waiting for an active device")
+          Text(localization.currentLanguage == .chinese ? "等待设备连接..." : "Waiting for an active device")
             .font(.system(size: 14))
             .foregroundColor(.white.opacity(0.7))
         }
@@ -80,7 +87,7 @@ struct NonStreamView: View {
         .opacity(viewModel.hasActiveDevice ? 0 : 1)
 
         CustomButton(
-          title: "Start on iPhone",
+          title: localization.startOnIPhone,
           style: .secondary,
           isDisabled: false
         ) {
@@ -90,7 +97,7 @@ struct NonStreamView: View {
         }
 
         CustomButton(
-          title: "Start streaming",
+          title: localization.startStreaming,
           style: .primary,
           isDisabled: !viewModel.hasActiveDevice
         ) {

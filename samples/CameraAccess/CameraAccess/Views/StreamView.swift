@@ -107,11 +107,11 @@ struct StreamView: View {
       }
     }
     // Gemini error alert
-    .alert("AI Assistant", isPresented: Binding(
+    .alert(LocalizationManager.shared.aiAssistant, isPresented: Binding(
       get: { geminiVM.errorMessage != nil },
       set: { if !$0 { geminiVM.errorMessage = nil } }
     )) {
-      Button("OK") { geminiVM.errorMessage = nil }
+      Button(LocalizationManager.shared.ok) { geminiVM.errorMessage = nil }
     } message: {
       Text(geminiVM.errorMessage ?? "")
     }
@@ -122,12 +122,13 @@ struct StreamView: View {
 struct ControlsView: View {
   @ObservedObject var viewModel: StreamSessionViewModel
   @ObservedObject var geminiVM: GeminiSessionViewModel
+  @ObservedObject var localization = LocalizationManager.shared
 
   var body: some View {
     // Controls row
     HStack(spacing: 8) {
       CustomButton(
-        title: "Stop streaming",
+        title: localization.stopStreaming,
         style: .destructive,
         isDisabled: false
       ) {
@@ -156,6 +157,9 @@ struct ControlsView: View {
           }
         }
       }
+      
+      // Language toggle
+      LanguageToggle()
     }
   }
 }
