@@ -31,6 +31,9 @@ struct NonStreamView: View {
           // Language toggle on the left
           LanguageToggle()
           
+          // Voice picker
+          VoicePicker()
+          
           Spacer()
           
           Menu {

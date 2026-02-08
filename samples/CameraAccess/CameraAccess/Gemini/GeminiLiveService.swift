@@ -164,11 +164,21 @@ class GeminiLiveService: ObservableObject {
   }
 
   private func sendSetupMessage() {
+    // Get the current voice from VoiceManager
+    let voiceName = VoiceManager.shared.currentVoice.rawValue
+    
     let setup: [String: Any] = [
       "setup": [
         "model": GeminiConfig.model,
         "generationConfig": [
           "responseModalities": ["AUDIO"],
+          "speechConfig": [
+            "voiceConfig": [
+              "prebuiltVoiceConfig": [
+                "voiceName": voiceName
+              ]
+            ]
+          ],
           "thinkingConfig": [
             "thinkingBudget": 0
           ]
