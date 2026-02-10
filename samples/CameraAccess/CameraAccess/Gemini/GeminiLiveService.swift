@@ -164,8 +164,8 @@ class GeminiLiveService: ObservableObject {
   }
 
   private func sendSetupMessage() {
-    // Get the current voice from VoiceManager
-    let voiceName = VoiceManager.shared.currentVoice.rawValue
+    // Use a warm, friendly voice
+    let voiceName = "Sulafat"  // Warm voice, good for Chinese & English
     
     let setup: [String: Any] = [
       "setup": [

@@ -1,25 +1,24 @@
-# VisionClaw 双语版 🦞😎🇨🇳🇺🇸
+# VisionClaw Chinese 🦞😎🇨🇳
 
-> **VisionClaw Bilingual Edition** - 中英双语支持的 Meta Ray-Ban 智能眼镜 AI 助手
+> **VisionClaw 中文优化版** - 自动双语支持的 Meta Ray-Ban 智能眼镜 AI 助手
 
-基于 [VisionClaw](https://github.com/sseanliu/VisionClaw) 的双语增强版，由 Karl Yang 制作。
+基于 [VisionClaw](https://github.com/sseanliu/VisionClaw) 优化，由 Karl Yang 制作。
 
-## ✨ 新增功能
+## ✨ 特性
 
-### 🌐 双语支持
-- **自动语言检测**: 根据系统语言自动设置中文或英文
-- **一键切换**: UI 中随时切换语言，无需重启
-- **智能响应**: AI 会根据你说话的语言自动用相应语言回复
+### 🌐 自动双语
+- **自动语言识别**: 说中文就中文回复，说英文就英文回复
+- **无需手动切换**: AI 自动检测语言并响应
+- **混合使用**: 可以在对话中自由切换语言
 
-### 📱 本地化 UI
-- 完整中文界面
-- 按钮、提示、错误信息全部汉化
-- 保留英文选项供需要时使用
+### 🔗 OpenClaw 集成
+- 通过 OpenClaw Gateway 执行任务
+- 支持 56+ 技能：搜索、发消息、智能家居等
+- 本地部署，隐私安全
 
-### 🤖 双语 AI 指令
-- 中文语音指令: "帮我搜索附近的咖啡店"
-- 英文语音指令: "Search for coffee shops nearby"
-- 混合使用: 可以在对话中自由切换语言
+### 🎙️ 优化的语音
+- 使用 Sulafat 温暖声音
+- 中英文发音清晰自然
 
 ## 🚀 快速开始
 
@@ -36,54 +35,57 @@ open CameraAccess.xcodeproj
 static let apiKey = "你的_GEMINI_API_KEY"
 ```
 
-### 3. 运行测试
+### 3. 配置 OpenClaw（可选但推荐）
+```swift
+static let openClawHost = "http://你的Mac的IP"
+static let openClawPort = 18789
+static let openClawGatewayToken = "你的token"
+```
+
+### 4. 运行
 - 选择你的 iPhone 作为目标设备
 - 按 Cmd+R 运行
-- 点击「使用 iPhone 摄像头」开始测试
+- 点击「使用 iPhone 摄像头」开始
 
-## 🎯 使用场景
+## 🎯 使用示例
 
-### 中文用户
-- 🍳 "我在看什么食材？可以做什么菜？"
-- 📝 "帮我把牛奶加到购物清单"
-- 💬 "给老婆发微信说我晚点到家"
-- 🔍 "搜索这个建筑的历史"
+### 视觉问答
+- "这是什么？"
+- "What am I looking at?"
+- "帮我看看这个价格"
 
-### English Users
-- 🌍 "What am I looking at?"
-- 📋 "Add eggs to my shopping list"
-- 💌 "Send a message to John"
-- 🔎 "Search for restaurants nearby"
+### 搜索（需要 OpenClaw）
+- "帮我搜索今天的新闻"
+- "这个品牌怎么样"
+
+### 发消息（需要 OpenClaw）
+- "发 Telegram 消息给我"
+- "帮我记个笔记"
+
+### 实用工具（需要 OpenClaw）
+- "今天天气怎么样"
+- "帮我算一下小费"
 
 ## 📁 项目结构
 
 ```
 samples/CameraAccess/CameraAccess/
-├── Localization/
-│   └── LocalizationManager.swift   # 新增：语言管理器
 ├── Gemini/
-│   └── GeminiConfig.swift          # 修改：使用本地化系统提示
+│   ├── GeminiConfig.swift      # API Key + OpenClaw 配置
+│   ├── GeminiLiveService.swift # Gemini Live WebSocket
+│   ├── AudioManager.swift      # 音频处理
+│   └── GeminiSessionViewModel.swift
+├── OpenClaw/
+│   ├── OpenClawBridge.swift    # OpenClaw HTTP 客户端
+│   ├── ToolCallModels.swift    # 工具声明
+│   └── ToolCallRouter.swift    # 工具调用路由
 ├── Views/
-│   ├── Components/
-│   │   └── LanguageToggle.swift    # 新增：语言切换按钮
-│   ├── NonStreamView.swift         # 修改：中文 UI
-│   └── StreamView.swift            # 修改：中文 UI
+│   ├── NonStreamView.swift     # 主界面
+│   └── StreamView.swift        # 串流界面
 └── ...
 ```
 
-## 🔧 技术实现
-
-### LocalizationManager
-- 单例模式管理全局语言状态
-- 使用 `@Published` 实现 SwiftUI 响应式更新
-- 语言偏好存储在 UserDefaults
-
-### 双语系统提示
-- 英文模式: 优化的英文 system prompt
-- 中文模式: 针对中文用户习惯优化的提示词
-- 两种模式都支持自动语言切换响应
-
-## 🔗 依赖
+## 🔧 依赖
 
 - iOS 17.0+
 - Xcode 15.0+
@@ -99,8 +101,8 @@ samples/CameraAccess/CameraAccess/
 
 - [VisionClaw](https://github.com/sseanliu/VisionClaw) - 原始项目
 - [Meta Wearables DAT SDK](https://github.com/facebook/meta-wearables-dat-ios)
-- [OpenClaw](https://github.com/nichochar/openclaw)
+- [OpenClaw](https://github.com/openclaw/openclaw)
 
 ---
 
-Made with ❤️ by Karl Yang / 牧牧 🐶
+Made with ❤️ by Karl Yang
