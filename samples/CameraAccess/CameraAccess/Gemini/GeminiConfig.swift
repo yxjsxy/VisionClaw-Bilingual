@@ -58,7 +58,7 @@ enum GeminiConfig {
   // send messages, delegate tasks) via an OpenClaw gateway on your Mac.
   // See README.md for setup instructions.
   // ---------------------------------------------------------------
-  static let openClawHost = "http://10.0.0.192"
+  static let openClawHost = "http://100.99.209.26"  // Tailscale IP - works anywhere
   static let openClawPort = 18789
   static let openClawHookToken = "5c0e3d45324d766a14f6a98cabe2d79b04cde61e4fcf64f3"
   static let openClawGatewayToken = "5c0e3d45324d766a14f6a98cabe2d79b04cde61e4fcf64f3"
