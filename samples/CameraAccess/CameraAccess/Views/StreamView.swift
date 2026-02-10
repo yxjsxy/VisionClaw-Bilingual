@@ -47,7 +47,14 @@ struct StreamView: View {
       // Gemini status overlay (top) + speaking indicator
       if geminiVM.isGeminiActive {
         VStack {
-          GeminiStatusBar(geminiVM: geminiVM)
+          HStack {
+            GeminiStatusBar(geminiVM: geminiVM)
+            Spacer()
+            VStack(alignment: .trailing, spacing: 4) {
+              ConnectionStatusView()
+              MemoryStatusView()
+            }
+          }
           Spacer()
 
           VStack(spacing: 8) {

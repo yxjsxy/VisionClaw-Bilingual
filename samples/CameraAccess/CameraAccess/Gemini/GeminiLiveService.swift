@@ -167,6 +167,10 @@ class GeminiLiveService: ObservableObject {
     // Use a warm, friendly voice
     let voiceName = "Sulafat"  // Warm voice, good for Chinese & English
     
+    // Get system instruction with memory context
+    let systemPrompt = GeminiConfig.systemInstructionWithMemory()
+    NSLog("[Gemini] System prompt length: \(systemPrompt.count) chars")
+    
     let setup: [String: Any] = [
       "setup": [
         "model": GeminiConfig.model,
@@ -185,7 +189,7 @@ class GeminiLiveService: ObservableObject {
         ],
         "systemInstruction": [
           "parts": [
-            ["text": GeminiConfig.systemInstruction]
+            ["text": systemPrompt]
           ]
         ],
         "tools": [
@@ -332,11 +336,15 @@ class GeminiLiveService: ObservableObject {
         NSLog("[Gemini] You: %@", text)
         lastUserSpeechEnd = Date()
         responseLatencyLogged = false
+        // Save to conversation memory
+        ConversationMemory.shared.addUserMessage(text)
         onInputTranscription?(text)
       }
       if let outputTranscription = serverContent["outputTranscription"] as? [String: Any],
          let text = outputTranscription["text"] as? String, !text.isEmpty {
         NSLog("[Gemini] AI: %@", text)
+        // Save to conversation memory
+        ConversationMemory.shared.addAssistantMessage(text)
         onOutputTranscription?(text)
       }
     }
