@@ -1,0 +1,35 @@
+VISIONCLAW-BILINGUAL APP SUMMARY
+
+WHAT IT IS
+VisionClaw-Bilingual is an iOS app that turns Meta Ray-Ban glasses (or an iPhone camera)
+into a real-time voice+vision AI assistant using Gemini Live. It can also delegate real-world
+actions to OpenClaw through a single execute tool path.
+
+WHO IT IS FOR
+Primary persona: a hands-free, on-the-go smart-glasses user (or iPhone tester) who wants
+bilingual (Chinese/English) voice assistance plus optional action execution via OpenClaw.
+
+WHAT IT DOES
+- Runs low-latency Gemini Live sessions over WebSocket with live mic input/output audio.
+- Streams visual context as JPEG frames throttled to about 1 frame per second.
+- Supports both glasses mode and iPhone camera mode for end-to-end testing.
+- Uses bilingual behavior rules in the system prompt (Chinese in, Chinese out; English in, English out).
+- Routes Gemini function calls to OpenClaw (/v1/chat/completions) through ToolCallRouter/OpenClawBridge.
+- Auto-selects LAN first, then Tailscale, for OpenClaw connectivity with retry/reconnect logic.
+- Persists conversation memory locally and injects recent summary/context into new sessions.
+
+HOW IT WORKS (REPO-EVIDENCED ARCHITECTURE)
+Input: Glasses DAT SDK video or AVCaptureSession iPhone video + iPhone mic audio
+  -> GeminiSessionViewModel orchestrates session state, audio wiring, and frame throttling
+  -> GeminiLiveService sends setup/audio/video over Gemini Live WebSocket
+  -> Gemini returns audio + transcriptions + tool calls
+  -> ToolCallRouter maps execute calls to OpenClawBridge
+  -> OpenClawBridge posts to OpenClaw gateway and returns tool results to Gemini
+  -> AudioManager plays model speech; ConversationMemory stores messages/summary on device
+Not found in repo: server-side deployment topology, external data schema/contracts, analytics stack.
+
+HOW TO RUN (MINIMAL)
+1) Open /samples/CameraAccess/CameraAccess.xcodeproj in Xcode (iOS 17+, Xcode 15+).
+2) Set Gemini API key in /samples/CameraAccess/CameraAccess/Gemini/GeminiConfig.swift.
+3) (Optional) Configure OpenClaw host/token and ensure gateway is reachable.
+4) Build and run on iPhone, then start iPhone or glasses streaming mode and tap AI.
